@@ -2,13 +2,13 @@ name: frontendCIWorkflow
 on:
   workflow_dispatch:
     paths:
-      - 'frontend/**'  
+      - 'starter/frontend/**'  
     branches:       
       - main
         
   pull_request:
     paths:
-      - 'frontend/**'  
+      - 'starter/frontend/**'  
     branches: 
       - main
 

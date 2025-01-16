@@ -2,24 +2,24 @@ name: backendCIWorkflow
 on:
   workflow_dispatch:
     paths:
-      - 'backend/**'
+      - 'starter/backend/**'
     branches:       
       - main
         
   pull_request:
     paths:
-      - 'backend/**'  
+      - 'starter/backend/**'  
     branches: 
       - main
   push:
     paths:
-      - 'backend/**'  
+      - 'starter/backend/**'  
     branches: 
       - main      
 jobs:
   LINT:
-  runs-on: ubuntu-latest
-  steps:
+    runs-on: ubuntu-latest
+    steps:
     - uses: actions/checkout@v4
     - name: Setup Python
       uses: actions/setup-python@v4
@@ -60,7 +60,7 @@ jobs:
         run: |
             cd starter/backend
             pipenv run test
-            
+
 
   BUILD:
     needs: [LINT, TEST]
