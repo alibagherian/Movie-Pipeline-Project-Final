@@ -27,7 +27,7 @@ jobs:
       - name: install project dependencies
         run: pipenv install --dev
       - name: run lint
-        run:  pipenv run python -m flake8
+        run:  pipenv run lint
   TEST:
     runs-on: ubuntu-latest
     steps:
@@ -44,7 +44,7 @@ jobs:
       - name: install project dependencies
         run: pipenv install --dev         
       - name: run tests
-        run:  pipenv run python pytest -v
+        run:  pipenv run test
 
   BUILD:
     needs: [LINT, TEST]
