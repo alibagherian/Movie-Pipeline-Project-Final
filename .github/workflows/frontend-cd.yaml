@@ -51,54 +51,46 @@ jobs:
         run: cd starter/frontend && npm ci    
       - name: Run test
         run: cd starter/frontend && npm run test
+     
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1        
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2  
+       
+       - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: your-ecr-repo-name
+          IMAGE_TAG: ${{ github.sha }}
+         run: |
+            docker build --build-arg REACT_APP_MOVIE_API_URL=${{ secrets.REACT_APP_MOVIE_API_URL }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG starter/frontend
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-      - name: Login to container registry
-        uses: docker/login-action@v2  
-        with:
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v2
+       with:
+        version: 'latest'
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4  
-        with:
-          context: starter/frontend
-          file:  starter/frontend/Dockerfile
-          push: true
-          tags: your-container-registry/your-image:latest
-          build-args: |
-              REACT_APP_MOVIE_API_URL=http://localhost:5000
-              
+      - name: updates the kubeconfig
+        run: aws eks update-kubeconfig --name my-cluster-name
 
-    - name: Generate deployment package
-      run: |
-        zip -r application.zip . -x '*.git*'
-  
+      - name: Set the image tag to the newer version
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: your-ecr-repo-name
+          IMAGE_TAG: ${{ github.sha }}          
+        run: |
+            cd starter/frontend/k8s
+            kustomize edit set image frontend=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-
-    - name: 
-      with:
-        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
-        application_name: my-node-app
-        environment_name: my-node-app-pr-${{ github.event.pull_request.number }}
-        version_label: version-${{ github.run_number }}
-        region: us-east-1
-        deployment_package: application.zip
-
-    cd starter/frontend/k8s
-
-
-/# Make sure you're kubeconfig is configured for the EKS cluster, i.e.
-/# aws eks update-kubeconfig`
-
-/# Set the image tag to the newer version
-/# ℹ️ Don't commit any changes to the manifests that this command introduces
-
-kustomize edit set image frontend=<ECR_REPO_URL>:<NEW_TAG_HERE>
-
-/# Apply the manifests to the cluster
-kustomize build | kubectl apply -f -    
+      - name: Apply the manifests to the cluster
+        run: kustomize build | kubectl apply -f -      
