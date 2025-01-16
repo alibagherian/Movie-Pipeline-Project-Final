@@ -5,12 +5,7 @@ on:
     paths:
       - 'starter/backend/**'  
     branches: 
-      - main
-  push:
-    paths:
-      - 'starter/backend/**'  
-    branches: 
-      - main      
+      - main   
 jobs:
   LINT:
    runs-on: ubuntu-latest
