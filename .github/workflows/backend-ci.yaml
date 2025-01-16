@@ -27,7 +27,9 @@ jobs:
       - name: install project dependencies
         run: pipenv install --dev
       - name: run lint
-        run:  pipenv run lint
+        run: |
+            cd starter/backend
+            pipenv run lint
   TEST:
     runs-on: ubuntu-latest
     steps:
@@ -44,7 +46,9 @@ jobs:
       - name: install project dependencies
         run: pipenv install --dev         
       - name: run tests
-        run:  pipenv run test
+        run: |
+            cd starter/backend
+            pipenv run test
 
   BUILD:
     needs: [LINT, TEST]
