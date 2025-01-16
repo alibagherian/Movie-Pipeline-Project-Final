@@ -19,11 +19,11 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.11'
       - name: install depndencies
         run: |
             python -m pip install --upgrade pip setuptools wheel
-            pip install pipenv==2022.10.4
+            pip install pipenv==2022.10.12
       - name: install project dependencies
         run: pipenv install --dev
       - name: run lint
@@ -36,11 +36,11 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.11'
       - name: Install dependencies 
         run: |      
               python -m pip install --upgrade pip setuptools wheel        
-              pip install pipenv==2022.10.4
+              pip install pipenv==2022.10.12
       - name: install project dependencies
         run: pipenv install --dev         
       - name: run tests
@@ -54,7 +54,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
