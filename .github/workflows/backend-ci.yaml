@@ -1,4 +1,4 @@
-name: backendCIWorkflow
+name: Backend Continuous Integration
 on:
   workflow_dispatch:
   pull_request:

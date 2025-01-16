@@ -1,18 +1,11 @@
-name: frontendCDworkflow
+name: Frontend Continuous Deployment
 on:
   workflow_dispatch:
-    paths:
-      -'frontend/**'
-    branches:       
-      - main
-        
   push:
     paths:
-      -'frontend/**'  
+      -'starter/frontend/**'  
     branches: 
       - main
-
-        name: frontendWorkflow
 
 jobs:
   LINT:
@@ -23,11 +16,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'latest' 
-
-      - name: Cache dependencies
-        uses: actions/cache@v4  
-        with:
-          path: ~/.npm  
 
       - name: Install dependencies
         run: cd starter/frontend && npm ci
@@ -44,11 +32,6 @@ jobs:
         with:
           node-version: 'latest'
 
-      - name: Cache dependencies
-        uses: actions/cache@v4  
-        with:
-          path: ~/.npm  
-
       - name: Install dependencies 
         run: cd starter/frontend && npm ci
       - name: Run test
@@ -63,11 +46,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'latest'
-
-      - name: Cache dependencies
-        uses: actions/cache@v4  
-        with:
-          path: ~/.npm  
 
       - name: Install dependencies
         run: cd starter/frontend && npm ci    
@@ -93,13 +71,6 @@ jobs:
           build-args: |
               REACT_APP_MOVIE_API_URL=http://localhost:5000
               
-jobs:
-  deploy_frontend:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
 
     - name: Generate deployment package
       run: |
