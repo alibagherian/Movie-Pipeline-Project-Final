@@ -57,7 +57,7 @@ jobs:
     needs: [LINT, TEST]
     runs-on: ubuntu-latest
     env:
-      ECR_REPOSITORY: your-ecr-repo-name    
+      ECR_REPOSITORY: 'your-ecr-repo-name'    
     steps:
       - uses: actions/checkout@v4
       - name: Setup Python
