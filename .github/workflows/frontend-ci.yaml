@@ -76,9 +76,7 @@ jobs:
       - name: Install dependencies
         run: cd starter/frontend && npm ci    
       - name: Run test
-        run: cd starter/frontend && npm run test
-      - name: Run Prettier to format code
-        run: cd starter/frontend && npx prettier --write .        
+        run: cd starter/frontend && npm run test      
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2  
