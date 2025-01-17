@@ -96,6 +96,6 @@ jobs:
           context: starter/backend
           file: starter/backend/Dockerfile
           push: true
-          tags: backend:${{ github.sha }}
+          tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
           build-args: |
             REACT_APP_MOVIE_API_URL=${{ env.REACT_APP_MOVIE_API_URL }}          
