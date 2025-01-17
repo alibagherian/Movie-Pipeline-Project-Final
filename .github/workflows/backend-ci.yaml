@@ -56,7 +56,7 @@ jobs:
     needs: [LINT, TEST]
     runs-on: ubuntu-latest
     env:
-      ECR_REPOSITORY: '410090104037.dkr.ecr.us-east-1.amazonaws.com/backend' 
+      ECR_REPOSITORY: backend 
       REACT_APP_MOVIE_API_URL: 'http://localhost:5000'  
 
     steps:
