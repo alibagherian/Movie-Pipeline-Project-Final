@@ -26,7 +26,7 @@ jobs:
             ${{ runner.os }}-npm-
 
       - name: Install dependencies
-        run: cd starter/frontend && npm install
+        run: cd starter/frontend && npm ci
       - name: Run lint      
         run: cd starter/frontend && npm run lint
 
@@ -49,7 +49,7 @@ jobs:
             ${{ runner.os }}-npm-
 
       - name: Install dependencies 
-        run: cd starter/frontend && npm install
+        run: cd starter/frontend && npm ci
       - name: Run test
         run: cd starter/frontend && npm run test
 
@@ -74,7 +74,7 @@ jobs:
             ${{ runner.os }}-npm-          
 
       - name: Install dependencies
-        run: cd starter/frontend && npm install    
+        run: cd starter/frontend && npm ci    
       - name: Run test
         run: cd starter/frontend && npm run test      
 
