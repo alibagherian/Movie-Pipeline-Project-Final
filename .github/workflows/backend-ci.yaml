@@ -68,19 +68,14 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           pip install pipenv
           pipenv install --dev
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-
-      - name: Login to container registry
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: starter/backend
-          file:  starter/backend/Dockerfile
+          file: starter/backend/Dockerfile
           push: true
-          tags: your-container-registry/your-image:latest
+          tags: backend:${{ github.sha }}
