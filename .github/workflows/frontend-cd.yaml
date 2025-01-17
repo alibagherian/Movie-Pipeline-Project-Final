@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       REACT_APP_MOVIE_API_URL: 'http://localhost:5000'     
-      ECR_REPOSITORY: '410090104037.dkr.ecr.us-east-1.amazonaws.com/frontend'
+      ECR_REPOSITORY: frontend
 
     steps:
       - uses: actions/checkout@v4
