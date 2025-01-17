@@ -19,8 +19,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns",
-    "clean": "rm -rf ./node_modules && rm -rf ./build",
-    "lint": "eslint --fix 'src/**/*.{js,jsx,ts,tsx,json}'"
+    "clean": "rm -rf ./node_modules && rm -rf ./build"
   },
   "eslintConfig": {
     "extends": [
