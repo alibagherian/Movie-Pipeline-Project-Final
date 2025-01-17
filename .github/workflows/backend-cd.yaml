@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ECR_REPOSITORY: '410090104037.dkr.ecr.us-east-1.amazonaws.com/backend' 
-      REACT_APP_MOVIE_API_URL: 'http://localhost:5000'          
+
     steps:
       - uses: actions/checkout@v4
       - name: Setup Python
@@ -87,14 +87,6 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1  
 
-      - name: Build, tag, and push image to Amazon ECR
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build --build-arg REACT_APP_MOVIE_API_URL=${{ env.REACT_APP_MOVIE_API_URL }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG starter/backend
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
         with:
@@ -103,10 +95,11 @@ jobs:
       - name: Update the kubeconfig
         run: aws eks update-kubeconfig --name cluster
 
-      - name: Set the image tag to the newer version    
+      - name: set the image and deploy to EKS   
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }} 
         run: |
           cd starter/backend/k8s
           kustomize edit set image backend=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
-      - name: Apply the manifests to the cluster
-        run: kustomize build | kubectl apply -f -
+          kustomize build | kubectl apply -f -
