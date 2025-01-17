@@ -42,8 +42,8 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       REACT_APP_MOVIE_API_URL: 'http://localhost:5000'     
-    env:
       ECR_REPOSITORY: 'your-ecr-repo-name'
+      
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
